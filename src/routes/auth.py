@@ -28,7 +28,8 @@ def login():
         if user and user.password == form.password.data:
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('auth.login'))
+            print(next_page)
+            return redirect(next_page) if next_page else redirect(url_for('home.home'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
             return redirect(url_for('auth.register'))
