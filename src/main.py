@@ -36,19 +36,7 @@ def create_app(config_class=Config):
         from .models.books import Book
         db.create_all()
         
-    #     books = [
-    #     Book(name='To Kill a Mockingbird', author="Lee Harper", published="2016", genre="Classic",
-    #          image_link="https://cdn.asaha.com/assets/thumbs/b95/b9516f63a1b8f1d7944695d00f4604b8.jpg"),
-    #    Book(name='To Kill a Mockingbird', author="Lee Harper", published="2016", genre="Classic",
-    #          image_link="https://cdn.asaha.com/assets/thumbs/b95/b9516f63a1b8f1d7944695d00f4604b8.jpg"),
-    #     ]
-    #     db.session.add_all(books)
-    #     db.session.commit()
-        
-        
-        # db.session.add(User(email = "user@example.com", password = "password"))
-        # db.session.commit()
-    
+
         
     from src.routes.auth import auth
     from src.routes.home import main
