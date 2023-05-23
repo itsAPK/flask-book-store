@@ -52,8 +52,10 @@ def create_app(config_class=Config):
         
     from src.routes.auth import auth
     from src.routes.home import main
+    from src.routes.books import book
     
     app.register_blueprint(auth)
     app.register_blueprint(main)
+    app.register_blueprint(book)
 
     return app

@@ -1,0 +1,78 @@
+{% extends "layout.html" %} {% block content %}
+
+<div class="d-flex justify-content-center">
+  <div class="content-section w-50">
+    <form method="POST" action="">
+      {{ form.hidden_tag() }}
+      <div class=" ">
+        <div class="border-bottom mb-4">
+          <p class="h4 text-center text-uppercase font-weight-bold">Add Book</p>
+        </div>
+        <div class="form-group">
+          {{ form.name.label(class="form-control-label ") }} {% if
+          form.name.errors %} {{ form.name(class="form-control form-control-sm
+          is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.name.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.name(class="form-control form-control-sm") }} {%
+          endif %}
+        </div>
+        <div class="form-group">
+          {{ form.author.label(class="form-control-label") }} {% if
+          form.author.errors %} {{ form.author(class="form-control
+          form-control-lg is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.author.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.author(class="form-control form-control-sm") }} {%
+          endif %}
+        </div>
+        <div class="form-group">
+          {{ form.published.label(class="form-control-label ") }} {% if
+          form.published.errors %} {{ form.published(class="form-control form-control-sm
+          is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.published.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.published(class="form-control form-control-sm") }} {%
+          endif %}
+        </div>
+        <div class="form-group">
+            {{ form.genre.label(class="form-control-label ") }} {% if
+            form.genre.errors %} {{ form.genre(class="form-control form-control-sm
+            is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.genre.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ form.genre(class="form-control form-control-sm") }} {%
+            endif %}
+          </div>
+          <div class="form-group">
+            {{ form.image_link.label(class="form-control-label ") }} {% if
+            form.image_link.errors %} {{ form.image_link(class="form-control form-control-sm
+            is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.image_link.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ form.image_link(class="form-control form-control-sm") }} {%
+            endif %}
+          </div>
+      </div>
+      <div class="form-group d-flex justify-content-center mt-5">
+        {{ form.submit(class="btn btn-outline-info w-25") }}
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

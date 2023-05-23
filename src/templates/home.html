@@ -1,9 +1,9 @@
 {% extends "layout.html" %} {% block content %}
-<div class="p-5 " style="height:120px;">
-  <div class="container d-flex flex-wrap " style=" flex: initial;  ">
+<div class="p-5" style="height: 120px">
+  <div class="container d-flex flex-wrap" style="flex: initial">
     {%for book in books%}
     <div class="p-2 col-lg-3">
-      <div class="card h-100" style="width: 240px;">
+      <div class="card h-100" style="width: 240px">
         <img
           class="card-img-top px-4 mt-3"
           src="{{book.image_link}}"
@@ -49,6 +49,18 @@
               <p style="font-size: 14px; margin-top: -16px">{{book.genre}}</p>
             </div>
           </div>
+          <form
+            method="post"
+            class="d-flex justify-content-center algin-items-center"
+            action="{{ url_for('book.delete', book_id=book.id) }}"
+          >
+            <input
+              class="btn btn-danger"
+              type="submit"
+              name="delete"
+              value="Delete"
+            />
+          </form>
         </div>
       </div>
     </div>
