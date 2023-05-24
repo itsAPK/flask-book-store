@@ -27,6 +27,7 @@
         </div>
           
           <div class="nav navbar-nav d-flex flex-row  ">
+            
             {% if current_user.is_authenticated %}
             <li class="nav-item p-1">
               <a class=" nav-link border btn " href="{{ url_for('book.add_book') }}"><span class="p-2 p text-muted">Add Book</span></a>
@@ -34,6 +35,8 @@
           <li class="nav-item p-1">
               <a class=" nav-link border btn " href="{{ url_for('auth.logout') }}"><span class="p-2 p text-muted">Logout</span></a>
         </li>
+          {% else %}
+         
             {% endif %}
         
         </div>

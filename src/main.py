@@ -6,7 +6,6 @@ from flask_login import LoginManager
 from flask import Flask
 import logging
 from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
 
 
 from src.utils.config import Config
@@ -16,7 +15,6 @@ logging.basicConfig(level=logging.DEBUG,
 logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
 db = SQLAlchemy()
-bcrypt = Bcrypt()
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 login_manager.login_message_category = 'info'
@@ -27,7 +25,6 @@ def create_app(config_class=Config):
     app.config['SQLALCHEMY_DATABASE_URI'] =  "sqlite:///main.db"
 
     db.init_app(app)
-    bcrypt.init_app(app)
     login_manager.init_app(app)
     
 

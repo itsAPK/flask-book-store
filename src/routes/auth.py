@@ -1,12 +1,12 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 
-from src.main import db, bcrypt,login_manager
+from src.main import db,login_manager
 from src.forms.login import LoginForm,RegisterForm
 from src.models.user import User
 
 
-auth = Blueprint('auth', __name__)
+auth = Blueprint('auth', __name__,url_prefix='/admin')
 
 @login_manager.user_loader
 def load_user(id):
@@ -21,8 +21,7 @@ def login():
   
     if form.validate_on_submit():
         
-        # db.session.add(User(email="apkvandagadde2@gmail.com", password="24111999"))
-        # db.session.commit()
+      
         user = User.query.filter_by(email=form.email.data).first()
       
         if user and user.password == form.password.data:
@@ -59,4 +58,4 @@ def register():
 @auth.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('home.home'))

@@ -1,7 +1,7 @@
 {% extends "layout.html" %} {% block content %}
 <div class="p-5" style="height: 120px">
   <div class="container d-flex flex-wrap" style="flex: initial">
-    {%for book in books%}
+    {%if current_user.is_authenticated %} {%for book in books%}
     <div class="p-2 col-lg-3">
       <div class="card h-100" style="width: 240px">
         <img
@@ -64,7 +64,58 @@
         </div>
       </div>
     </div>
-    {%endfor %}
+    {%endfor %} {%else%} {%for book in books[:10]%}
+    <div class="p-2 col-lg-3">
+      <div class="card h-100" style="width: 240px">
+        <img
+          class="card-img-top px-4 mt-3"
+          src="{{book.image_link}}"
+          alt="{{book.name}}"
+          width="200px"
+          height="250px"
+        />
+        <div class="card-body">
+          <p
+            class="card-title text-uppercase text-center"
+            style="font-size: 15px; font-weight: 500"
+          >
+            {{book.name}}
+          </p>
+          <div class="inline-flex flex-col">
+            <p
+              class="text-uppercase text-muted"
+              style="font-size: 12px; font-weight: 600"
+            >
+              Author
+            </p>
+            <p style="font-size: 14px; margin-top: -16px">{{book.author}}</p>
+          </div>
+          <div class="d-flex justify-content-between">
+            <div class="inline-flex flex-col">
+              <p
+                class="text-uppercase text-muted"
+                style="font-size: 12px; font-weight: 600"
+              >
+                published
+              </p>
+              <p style="font-size: 14px; margin-top: -16px">
+                {{book.published}}
+              </p>
+            </div>
+            <div class="inline-flex flex-col">
+              <p
+                class="text-uppercase text-muted"
+                style="font-size: 12px; font-weight: 600"
+              >
+                genre
+              </p>
+              <p style="font-size: 14px; margin-top: -16px">{{book.genre}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {%endfor%} {% endif %}
   </div>
 </div>
 
