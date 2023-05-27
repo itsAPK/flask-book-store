@@ -30,7 +30,8 @@ def create_app(config_class=Config):
 
     with app.app_context():
         from .models.user import User
-        from .models.books import Book
+        from .models.books import Book,Rental
+        db.drop_all()
         db.create_all()
         
 
