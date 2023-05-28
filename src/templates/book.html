@@ -1,78 +1,64 @@
 {% extends "layout.html" %} {% block content %}
+<div class="d-felx p-5 h-full">
+  <div class="d-flex justify-content-between flex-row px-5">
+    <div class="px-4">
+      <img
+        class="card-img-top px-4 mt-3"
+        src="{{book.image_link}}"
+        alt="{{book.name}}"
+        width="350px"
+        height="400px"
+      />
+    </div>
+    <div class="py-4 d-flex flex-column w-75 mt-4">
+      <h2 class="text-uppercase">{{book.name}}</h2>
+      <div><p class="text-secondary mt-1">{{book.description}}</p></div>
+      <div class="d-flex justify-content-between " style="margin-top: 26px;">
+        <div class="inline-flex flex-col">
+          <p
+            class="text-uppercase text-muted"
+            style="font-size: 16px; font-weight: 600"
+          >
+            Author
+          </p>
+          <p style="font-size: 18px; margin-top: -16px">{{book.author}}</p>
+        </div>
+        <div class="inline-flex flex-col">
+          <p
+            class="text-uppercase text-muted"
+            style="font-size: 16px; font-weight: 600"
+          >
+            published at
+          </p>
+          <p style="font-size: 18px; margin-top: -16px">{{book.published}}</p>
+        </div>
+        <div class="inline-flex flex-col">
+          <p
+            class="text-uppercase text-muted"
+            style="font-size: 16px; font-weight: 600"
+          >
+            Genre
+          </p>
+          <p style="font-size: 18px; margin-top: -16px">
+            {{book.genre|get_enum_value }}
+          </p>
+        </div>
+       
 
-<div class="d-flex justify-content-center">
-  <div class="content-section w-50">
-    <form method="POST" action="">
-      {{ form.hidden_tag() }}
-      <div class=" ">
-        <div class="border-bottom mb-4">
-          <p class="h4 text-center text-uppercase font-weight-bold">Add Book</p>
-        </div>
-        <div class="form-group">
-          {{ form.name.label(class="form-control-label ") }} {% if
-          form.name.errors %} {{ form.name(class="form-control form-control-sm
-          is-invalid") }}
-          <div class="invalid-feedback">
-            {% for error in form.name.errors %}
-            <span>{{ error }}</span>
-            {% endfor %}
-          </div>
-          {% else %} {{ form.name(class="form-control form-control-sm") }} {%
-          endif %}
-        </div>
-        <div class="form-group">
-          {{ form.author.label(class="form-control-label") }} {% if
-          form.author.errors %} {{ form.author(class="form-control
-          form-control-lg is-invalid") }}
-          <div class="invalid-feedback">
-            {% for error in form.author.errors %}
-            <span>{{ error }}</span>
-            {% endfor %}
-          </div>
-          {% else %} {{ form.author(class="form-control form-control-sm") }} {%
-          endif %}
-        </div>
-        <div class="form-group">
-          {{ form.published.label(class="form-control-label ") }} {% if
-          form.published.errors %} {{ form.published(class="form-control form-control-sm
-          is-invalid") }}
-          <div class="invalid-feedback">
-            {% for error in form.published.errors %}
-            <span>{{ error }}</span>
-            {% endfor %}
-          </div>
-          {% else %} {{ form.published(class="form-control form-control-sm") }} {%
-          endif %}
-        </div>
-        <div class="form-group">
-            {{ form.genre.label(class="form-control-label ") }} {% if
-            form.genre.errors %} {{ form.genre(class="form-control form-control-sm
-            is-invalid") }}
-            <div class="invalid-feedback">
-              {% for error in form.genre.errors %}
-              <span>{{ error }}</span>
-              {% endfor %}
-            </div>
-            {% else %} {{ form.genre(class="form-control form-control-sm") }} {%
-            endif %}
-          </div>
-          <div class="form-group">
-            {{ form.image_link.label(class="form-control-label ") }} {% if
-            form.image_link.errors %} {{ form.image_link(class="form-control form-control-sm
-            is-invalid") }}
-            <div class="invalid-feedback">
-              {% for error in form.image_link.errors %}
-              <span>{{ error }}</span>
-              {% endfor %}
-            </div>
-            {% else %} {{ form.image_link(class="form-control form-control-sm") }} {%
-            endif %}
-          </div>
       </div>
-      <div class="form-group d-flex justify-content-center mt-5">
-        {{ form.submit(class="btn btn-outline-info w-25") }}
-      </div>
+      <form
+      method="post"
+      class="w-100 text-uppercase d-flex justify-content-center " style="margin-top:60px;"
+      action=""
+    >
+      <input
+        class="btn btn-primary btn-lg text-uppercase  "
+        type="submit"
+        name="rent"
+        value="Buy For Rent"
+      />
     </form>
+    </div>
   </div>
 </div>
 {% endblock %}

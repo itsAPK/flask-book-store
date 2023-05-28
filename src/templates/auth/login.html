@@ -6,7 +6,7 @@
       {{ form.hidden_tag() }}
       <div class=" ">
         <div class="border-bottom mb-4">
-          <p class="h4 text-center text-uppercase font-weight-bold">Register</p>
+          <p class="h4 text-center text-uppercase font-weight-bold">LogIn</p>
         </div>
         <div class="form-group">
           {{ form.email.label(class="form-control-label ") }} {% if
@@ -32,11 +32,15 @@
           {% else %} {{ form.password(class="form-control form-control-sm") }}
           {% endif %}
         </div>
-       
+        <div class="form-check">
+          {{ form.remember(class="form-check-input") }} {{
+          form.remember.label(class="form-check-label") }}
+        </div>
       </div>
       <div class="form-group d-flex justify-content-center mt-5">
         {{ form.submit(class="btn btn-outline-info w-25") }}
       </div>
+      <p class="text-center py-4"><span style="font-size:15px;">Not User?</span> <a href="{{ url_for('auth.register') }}" style="cursor: pointer;">Register</a></p>
     </form>
   </div>
 </div>

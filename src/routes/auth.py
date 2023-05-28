@@ -3,10 +3,10 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 from src.main import db,login_manager
 from src.forms.login import LoginForm,RegisterForm
-from src.models.user import User
+from src.models.user import User,Role
 
 
-auth = Blueprint('auth', __name__,url_prefix='/admin')
+auth = Blueprint('auth', __name__)
 
 @login_manager.user_loader
 def load_user(id):
@@ -30,7 +30,7 @@ def login():
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
             return redirect(url_for('auth.register'))
-    return render_template('login.html', title='Login', form=form)
+    return render_template('auth/login.html', title='Login', form=form)
 
 
 @auth.route("/register", methods=["GET", "POST"])
@@ -41,7 +41,8 @@ def register():
         if not user:
             db.session.add(User(
                 email=form.email.data, 
-                password=form.password.data
+                password=form.password.data,
+                role=Role(form.role.data)
                 )
             )
             db.session.commit()
@@ -51,7 +52,7 @@ def register():
             flash('User Already Registered. Please Login', 'warning')
             return redirect(url_for('auth.login'))
         
-    return render_template('register.html', title='Register', form=form)
+    return render_template('auth/register.html', title='Register', form=form)
     
     
     

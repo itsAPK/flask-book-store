@@ -1,40 +1,28 @@
 
 
-from flask import Blueprint, redirect, render_template,flash, url_for
+import datetime
+from pprint import pprint
+from flask import Blueprint, redirect, render_template,flash, url_for,request
 from flask_login import login_required
 from src.models.books import Book
 from src.forms.book import BookForm
 from src.main import db
 
-book = Blueprint('book', __name__)
+book = Blueprint('books', __name__)
 
 
-@book.route("/book/add", methods=['GET', 'POST'])
+
+
+@book.route('/book/<int:book_id>',methods=['GET'])
 @login_required
-def add_book():
-    form = BookForm()
-    if form.validate_on_submit():
-
-        db.session.add(  
-            Book(
-                name=form.name.data,
-                author=form.author.data,
-                published=form.published.data,
-                genre=form.genre.data,
-                image_link=form.image_link.data
-            )
-        )
-        db.session.commit()
-        flash('Book Added Successfully', 'success')
-
-    return render_template('book.html', title='Add Book', form=form)
-
-
-@book.route('/book/delete/<int:book_id>', methods=['POST'])
-@login_required
-def delete(book_id):
+def get_book(book_id):
     book = Book.query.get_or_404(book_id)
-    db.session.delete(book)
-    db.session.commit()
-    flash('Book deleted.',"danger")
-    return redirect(url_for('home.home'))
+   
+    if not book:
+         flash("Book Not Found in Database","error")
+         return redirect(url_for('home.home'))
+    
+
+    return render_template('book.html', title=book.name, book=book)
+
+    

@@ -1,16 +1,19 @@
 {% extends "layout.html" %} {% block content %}
 <div class="p-5" style="height: 120px">
   <div class="container d-flex flex-wrap" style="flex: initial">
-    {%if current_user.is_authenticated %} {%for book in books%}
+    {%if current_user.is_authenticated %} {%for book in books%} {%if book.show
+    == true %}
+    
     <div class="p-2 col-lg-3">
       <div class="card h-100" style="width: 240px">
+        <a href="{{ url_for('books.get_book', book_id =  book.id) }}">
         <img
           class="card-img-top px-4 mt-3"
           src="{{book.image_link}}"
           alt="{{book.name}}"
           width="200px"
           height="250px"
-        />
+        /></a>
         <div class="card-body">
           <p
             class="card-title text-uppercase text-center"
@@ -46,25 +49,27 @@
               >
                 genre
               </p>
-              <p style="font-size: 14px; margin-top: -16px">{{book.genre}}</p>
+              <p style="font-size: 14px; margin-top: -16px">
+                {{ book.genre|get_enum_value }}
+              </p>
             </div>
           </div>
           <form
             method="post"
-            class="d-flex justify-content-center algin-items-center"
-            action="{{ url_for('book.delete', book_id=book.id) }}"
+            class="w-100 text-uppercase"
+            action=""
           >
             <input
-              class="btn btn-danger"
+              class="btn btn-primary text-uppercase w-100"
               type="submit"
-              name="delete"
-              value="Delete"
+              name="rent"
+              value="Buy For Rent"
             />
           </form>
         </div>
       </div>
     </div>
-    {%endfor %} {%else%} {%for book in books[:10]%}
+    {%endif%} {%endfor %} {%else%} {%for book in books%}
     <div class="p-2 col-lg-3">
       <div class="card h-100" style="width: 240px">
         <img
@@ -109,7 +114,10 @@
               >
                 genre
               </p>
-              <p style="font-size: 14px; margin-top: -16px">{{book.genre}}</p>
+
+              <p style="font-size: 14px; margin-top: -16px">
+                {{book.genre.value}}
+              </p>
             </div>
           </div>
         </div>

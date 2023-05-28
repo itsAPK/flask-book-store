@@ -10,11 +10,6 @@ main = Blueprint('home', __name__)
 
 @main.route('/')
 def home():
-    # l = [
-    #     Book(name='To Kill a Mockingbird', author="Lee Harper", published="2016", genre="Classic",
-    #          image_link="https://cdn.asaha.com/assets/thumbs/b95/b9516f63a1b8f1d7944695d00f4604b8.jpg")
-    # ]
-    # db.session.add_all(l)
-    # db.session.commit()
+   
     book = Book.query.all()
     return render_template('home.html', title='Home', books=book)
