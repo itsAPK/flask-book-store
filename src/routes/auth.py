@@ -26,7 +26,12 @@ def login():
       
         if user and user.password == form.password.data:
             login_user(user, remember=form.remember.data)
-            return redirect(url_for('home.home'))
+            
+            if user.role == 'user':
+              return redirect(url_for('home.home'))
+          
+            return redirect(url_for('admin.dashboard'))
+          
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
             return redirect(url_for('auth.register'))
