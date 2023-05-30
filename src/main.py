@@ -41,18 +41,18 @@ def create_app(config_class=Config):
         db.create_all()
 
         admin_key = Admin.query.first()  # Check if an admin key already exists
-        print(admin_key.key)
         if not admin_key:
             # Create a default admin key if none exists
-            default_key = Admin(key=uuid.uuid4, active=True)
+            key = str(uuid.uuid4())
+            default_key = Admin(key=key, active=True)
             db.session.add(default_key)
             db.session.commit()
-
+            print(default_key)
             print("Admin Key :" + default_key.key)
    
     
         
-
+    
         
     from src.routes.auth import auth
     from src.routes.home import main
