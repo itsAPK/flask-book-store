@@ -1,1 +1,2 @@
 from src.extensions.enum_select_field import EnumSelectField
+from src.extensions.admin_login_required import admin_login_required

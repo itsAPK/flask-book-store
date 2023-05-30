@@ -27,10 +27,9 @@ def login():
         if user and user.password == form.password.data:
             login_user(user, remember=form.remember.data)
             
-            if user.role == Role.USER:
-              return redirect(url_for('home.home'))
+         
+            return redirect(url_for('home.home'))
           
-            return redirect(url_for('admin.dashboard'))
           
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
@@ -47,7 +46,7 @@ def register():
             db.session.add(User(
                 email=form.email.data, 
                 password=form.password.data,
-                role=Role(form.role.data)
+                
                 )
             )
             db.session.commit()

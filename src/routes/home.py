@@ -11,13 +11,7 @@ main = Blueprint('home', __name__)
 @main.route('/')
 def home():
    
-     if  current_user.is_authenticated:
-          if current_user.role == Role.ADMIN: 
-               return redirect(url_for('admin.dashboard'))
-          else:
-                book = Book.query.all()
-                return render_template('home.html', title='Home',books=book)
-     else:
+    
    
           book = Book.query.all()
           return render_template('home.html', title='Home',books=book)

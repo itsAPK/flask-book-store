@@ -22,29 +22,42 @@
         <div class="container-fluid  mt-4">
           <div class="navbar-header">
             
-         
-          <a class="navbar-brand mb-0 h1 " href="/">Flask Book Store</a>
+            {% if  session['admin_logged_in'] == True and request.path.startswith('/admin') %}
+                  <a class="navbar-brand mb-0 h1 " href="/admin">Flask Book Store</a>
+            {%else%}
+                  <a class="navbar-brand mb-0 h1 " href="/">Flask Book Store</a>
+            {%endif%}
         </div>
           
           <div class="nav navbar-nav d-flex flex-row  ">
-            
-            {% if current_user.is_authenticated %}
-            
-             {% if current_user.role.value == 'admin' and  request.path.startswith('/admin') %}
+            {% if  session['admin_logged_in'] == True and request.path.startswith('/admin') and not request.path == "/admin/login"  %}
            
-             <li class="nav-item p-1">
-               <a class=" nav-link border btn " href="{{ url_for('admin.add_book') }}"><span class="p-2 p text-muted">Add Book</span></a>
-             </li>
-         {% endif %}
+              <li class="nav-item p-1">
+                <a class=" nav-link border btn " href="{{ url_for('admin.add_book') }}"><span class="p-2 p text-muted">Add Book</span></a>
+              </li>
+              <li class="nav-item p-1">
+                <a class=" nav-link border btn " href="{{ url_for('admin.create_access_key') }}"><span class="p-2 p text-muted">Admins Info</span></a>
+              </li>
+              <li class="nav-item p-1">
+                <a class=" nav-link border btn " href="{{ url_for('admin.logout') }}"><span class="p-2 p text-muted">Logout</span></a>
+              </li>
 
-          <li class="nav-item p-1">
-              <a class=" nav-link border btn " href="{{ url_for('auth.logout') }}"><span class="p-2 p text-muted">Logout</span></a>
-        </li>
-          {% else %}
-         {% if not request.path == '/login' or request.path == '/register' %}
-          <a class=" nav-link border btn " href="{{ url_for('auth.login') }}"><span class="p-2 p text-muted">Login</span></a>
-        {% endif %}
-        {%endif %}
+            {% else %}
+              {% if current_user.is_authenticated  %}
+                <li class="nav-item p-1">
+                  <a class=" nav-link border btn " href="{{ url_for('auth.logout') }}"><span class="p-2 p text-muted">Logout</span></a>
+                </li>
+              {% else %}
+                {% if not request.path == '/login' or request.path == '/register' %}
+                  {%if not request.path == '/admin/login' %}
+                      <a class=" nav-link border btn " href="{{ url_for('auth.login') }}"><span class="p-2 p text-muted">Login</span></a>
+                  {%endif %}
+                {% endif %}
+              {%endif %}
+
+           {% endif %}
+
+            
         </div>
       </nav>
     </header>

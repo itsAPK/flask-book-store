@@ -1,3 +1,4 @@
+import uuid
 from src.main import db
 from flask_login import UserMixin
 from enum import Enum
@@ -16,3 +17,9 @@ class User(db.Model,UserMixin):
     password = db.Column(db.String(60), nullable=False)
     borrowed_books =  db.relationship('Rental', backref='user')
     role = db.Column(db.Enum(Role), nullable=False, default=Role.USER)
+    
+    
+class Admin(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    key = db.Column(db.String(50), unique=True, default=uuid.uuid4)
+    active = db.Column(db.Boolean, default=True)

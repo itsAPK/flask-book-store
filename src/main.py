@@ -2,6 +2,7 @@
 
 """Main Application"""
 
+import uuid
 from flask_login import LoginManager
 from flask import Flask
 import logging
@@ -9,9 +10,9 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 from src.utils.config import Config
-logging.basicConfig(level=logging.DEBUG,
-                    format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
-logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+# logging.basicConfig(level=logging.DEBUG,
+#                     format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+# logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -33,10 +34,22 @@ def create_app(config_class=Config):
     
 
     with app.app_context():
-        from .models.user import User
+        from .models.user import User,Admin
         from .models.books import Book,Rental
+        
    
         db.create_all()
+
+        admin_key = Admin.query.first()  # Check if an admin key already exists
+        print(admin_key.key)
+        if not admin_key:
+            # Create a default admin key if none exists
+            default_key = Admin(key=uuid.uuid4, active=True)
+            db.session.add(default_key)
+            db.session.commit()
+
+            print("Admin Key :" + default_key.key)
+   
     
         
 

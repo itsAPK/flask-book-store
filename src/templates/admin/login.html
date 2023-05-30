@@ -1,0 +1,16 @@
+{% extends "layout.html" %} {% block content %}
+
+<div class="d-flex justify-content-center algin-items-center">
+  <div class="content-section w-50">
+<form method="POST">
+    <div class="form-group">
+      <label for="admin_key" class="p">Please Enter Admin Authentication Key</label>
+      <input type="text" name="admin_key" id="admin_key" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary ">Login</button>
+    {% if error_message %}
+      <p class="text-danger">{{ error_message }}</p>
+    {% endif %}
+  </form></div></div>
+
+  {%endblock%}
