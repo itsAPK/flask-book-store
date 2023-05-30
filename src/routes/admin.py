@@ -26,21 +26,27 @@ def add_book():
     form = BookForm(request.form)
   
     if form.validate_on_submit():
-        
-        db.session.add(  
-            Book(
-                name=form.name.data,
-                author=form.author.data,
-                published=form.published.data,
-                genre=Genre(form.genre.data),
-                description= form.description.data, 
-                in_stock = form.in_stock.data ,
-                show = True if form.show.data == 'Yes'  else  False,
-                image_link=form.image_link.data
+        book = Book.query.filter_by(name = form.name.data).first()
+        if book:
+            flash('Book Already Found in Database', 'danger')
+        else:
+            db.session.add(  
+                Book(
+                    name=form.name.data,
+                    author=form.author.data,
+                    published=form.published.data,
+                    genre=Genre(form.genre.data),
+                    description= form.description.data, 
+                    in_stock = form.in_stock.data ,
+                    show = True if form.show.data == 'Yes'  else  False,
+                    image_link=form.image_link.data
+                )
             )
-        )
-        db.session.commit()
-        flash('Book Added Successfully', 'success')
+            db.session.commit()
+            flash('Book Added Successfully', 'success')
+            return redirect(url_for('admin.add_book'))
+            
+       
 
     return render_template('admin/book.html', title='Add Book', form=form)
 
