@@ -1,3 +1,4 @@
+from pprint import pprint
 from flask import Blueprint, redirect, render_template,flash, url_for,request
 from flask_login import login_required
 
@@ -15,6 +16,7 @@ admin = Blueprint('admin', __name__,url_prefix='/admin')
 @role_required(Role.ADMIN)
 def dashboard():
     book = Book.query.all()
+    pprint([i.__dict__ for i in book])
     return  render_template('admin/admin.html', title='Admin', books=book)
 
 @admin.route("/book/add", methods=['GET', 'POST'])
@@ -49,7 +51,7 @@ def edit_book(book_id):
     book = Book.query.get_or_404(book_id)
     form = BookUpdateForm(request.form,obj=book)
     if form.validate_on_submit():
-       
+        
         
         book.name = form.name.data if form.name.data != book.name else book.name
         book.author = form.author.data if form.author.data != book.author else book.author
@@ -57,7 +59,7 @@ def edit_book(book_id):
         book.genre = form.genre.data if form.genre.data != book.genre else book.genre
         book.description = form.description.data if form.description.data != book.description else book.description
         book.in_stock = form.in_stock.data if form.in_stock.data != book.in_stock else book.in_stock
-        book.show = bool(form.show.data) if form.show.data != book.show else book.show
+        book.show = True if book.show == "True" else False if form.show.data != book.show else book.show
         book.image_link = form.image_link.data if form.image_link.data != book.image_link else book.image_link
          
         db.session.commit()
