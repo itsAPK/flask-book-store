@@ -8,7 +8,7 @@
        
           <img
             class="card-img-top px-4 mt-3"
-            src="{{book.image_link}}"
+            src="{{ url_for('static', filename=book.image_link) }}"
             alt="{{book.name}}"
             width="200px"
             height="250px"

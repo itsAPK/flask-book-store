@@ -27,7 +27,7 @@ def login():
         if user and user.password == form.password.data:
             login_user(user, remember=form.remember.data)
             
-            if user.role == 'user':
+            if user.role == Role.USER:
               return redirect(url_for('home.home'))
           
             return redirect(url_for('admin.dashboard'))
