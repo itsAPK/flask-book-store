@@ -118,32 +118,67 @@ def add_book():
 def edit_book(book_id):
     book = Book.query.get_or_404(book_id)
     form = BookUpdateForm(obj=book)
+    has_changes = False
 
     if form.validate_on_submit():
+        if form.name.data != book.name:
+            print(form.name.data)
+            book.name = form.name.data
+            has_changes = True
 
-        print(type(form.image_link.data))
-        book.name = form.name.data if form.name.data != book.name else book.name
-        book.author = form.author.data if form.author.data != book.author else book.author
-        book.published = form.published.data if form.published.data != book.published else book.published
-        book.genre = form.genre.data if form.genre.data != book.genre else book.genre
-        book.description = form.description.data if form.description.data != book.description else book.description
-        book.in_stock = form.in_stock.data if form.in_stock.data != book.in_stock else book.in_stock
-        if form.show.data == str(True):
-            book.show = True if form.show.data != str(book.show) else book.show
-        else:
-            book.show = False if form.show.data != book.show else book.show
-        if type(form.image_link.data) == FileStorage:
+        if form.author.data != book.author:
+            print(form.author.data)
+            book.author = form.author.data
+            has_changes = True
+
+        if form.published.data != book.published:
+            print(form.published.data)
+            book.published = form.published.data
+            has_changes = True
+
+        if form.genre.data != book.genre and form.genre.data != Genre.NonCategorized:
+            print(form.genre.data)
+            book.genre = form.genre.data
+            has_changes = True
+
+        if form.description.data != book.description:
+            print(form.description.data)
+            book.description = form.description.data
+            has_changes = True
+
+        if form.in_stock.data != book.in_stock:
+            book.in_stock = form.in_stock.data
+            has_changes = True
+
+        if form.show.data != str(book.show):
+            if form.show.data == str(True) :
+                print(form.show.data)
+                book.show = True
+                has_changes = True
+            else:
+                print(form.show.data)
+                book.show = False
+                has_changes = True
+
+        if isinstance(form.image_link.data, FileStorage):
+            print(form.image_link.data)
             image_file = form.image_link.data
             image_filename = secure_filename(image_file.filename)
-            # image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], image_filename)
             image_file.save(f"src/static/files/{image_filename}")
-            book.image_link = f"files/{image_filename}" if f"files/{image_filename}" != book.image_link else book.image_link
+            new_image_link = f"files/{image_filename}"
+            if new_image_link != book.image_link:
+                book.image_link = new_image_link
+                has_changes = True
 
-        db.session.commit()
-
-        flash('Book Updated Successfully', 'success')
+        if has_changes:
+        
+            db.session.commit()
+            flash('Book Updated Successfully', 'success')
+        else:
+            flash('No changes made to the book', 'info')
 
     return render_template('admin/book.html', title='Edit Book', form=form)
+
 
 
 @admin.route('/book/delete/<int:id>', methods=['POST'])

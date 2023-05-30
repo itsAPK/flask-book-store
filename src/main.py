@@ -37,9 +37,8 @@ def create_app(config_class=Config):
         from .models.user import User,Admin
         from .models.books import Book,Rental
         
-   
+       
         db.create_all()
-
         admin_key = Admin.query.first()  # Check if an admin key already exists
         if not admin_key:
             # Create a default admin key if none exists
@@ -47,13 +46,13 @@ def create_app(config_class=Config):
             default_key = Admin(key=key, active=True)
             db.session.add(default_key)
             db.session.commit()
-            print(default_key)
+            
             print("Admin Key :" + default_key.key)
    
     
         
     
-        
+          
     from src.routes.auth import auth
     from src.routes.home import main
     from src.routes.books import book
