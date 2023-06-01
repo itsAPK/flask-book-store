@@ -4,7 +4,7 @@
 
 import uuid
 from flask_login import LoginManager
-from flask import Flask
+from flask import Flask,session
 import logging
 from flask_sqlalchemy import SQLAlchemy
 
@@ -31,12 +31,11 @@ def create_app(config_class=Config):
     db.init_app(app)
     login_manager.init_app(app)
     
-    
-
+   
     with app.app_context():
         from .models.user import User,Admin,AccessKey
         from .models.books import Book,Rental
-        
+
         
         db.create_all()
         #Admin.__table__.drop(db.engine)

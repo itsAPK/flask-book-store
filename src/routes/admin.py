@@ -17,7 +17,8 @@ admin = Blueprint('admin', __name__, url_prefix='/admin')
 
 @admin.route('/login', methods=['GET', 'POST'])
 def login():
-    if session['admin_logged_in'] == True:
+    print(session )
+    if 'admin_logged_in' in session and session['admin_logged_in'] == True:
         return redirect(url_for('admin.dashboard'))
     form = AdminLoginForm()
 
@@ -81,7 +82,7 @@ def create_access_key():
         key = str(uuid.uuid4())
 
         # Create a new AdminKey instance
-        admin_key = Admin(key=key, active=True)
+        admin_key = AccessKey(key=key, active=True)
 
         # Add the key to the database
         db.session.add(admin_key)
@@ -90,14 +91,14 @@ def create_access_key():
         # Redirect back to the same route to refresh the page
         return redirect(url_for('admin.create_access_key'))
 
-    admins = Admin.query.all()
+    admins = AccessKey.query.all()
     return render_template('admin/all_admin.html', admins=admins)
 
 
 @admin.route('/access-key/delete/<int:id>')
 @admin_login_required
 def delete_access_key(id):
-    admin = Admin.query.get_or_404(id)
+    admin = AccessKey.query.get_or_404(id)
     db.session.delete(admin)
     db.session.commit()
     flash('Admin deleted.', "warning")
