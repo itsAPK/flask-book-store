@@ -6,8 +6,20 @@
       {{ form.hidden_tag() }}
       <div class=" ">
         <div class="border-bottom mb-4">
-          <p class="h4 text-center text-uppercase font-weight-bold">LogIn</p>
+          <p class="h4 text-center text-uppercase font-weight-bold">Register</p>
         </div>
+        <div class="form-group">
+            {{ form.access_key.label(class="form-control-label") }} {% if
+            form.access_key.errors %} {{ form.access_key(class="form-control
+            form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.access_key.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ form.access_key(class="form-control form-control-sm") }}
+            {% endif %}
+          </div>
         <div class="form-group">
           {{ form.email.label(class="form-control-label ") }} {% if
           form.email.errors %} {{ form.email(class="form-control form-control-sm
@@ -32,12 +44,12 @@
           {% else %} {{ form.password(class="form-control form-control-sm") }}
           {% endif %}
         </div>
-      
+
+        
       </div>
       <div class="form-group d-flex justify-content-center mt-5">
         {{ form.submit(class="btn btn-outline-info w-25") }}
       </div>
-      <p class="text-center py-4"><span style="font-size:15px;">Not User?</span> <a href="{{ url_for('admin.register') }}" style="cursor: pointer;">Register</a></p>
     </form>
   </div>
 </div>

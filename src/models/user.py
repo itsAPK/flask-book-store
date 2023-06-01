@@ -19,7 +19,13 @@ class User(db.Model,UserMixin):
     role = db.Column(db.Enum(Role), nullable=False, default=Role.USER)
     
     
-class Admin(db.Model):
+class AccessKey(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     key = db.Column(db.String(50), unique=True, default=uuid.uuid4)
     active = db.Column(db.Boolean, default=True)
+    
+    
+class Admin(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(60), nullable=False)

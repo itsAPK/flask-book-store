@@ -30,7 +30,8 @@
         </div>
           
           <div class="nav navbar-nav d-flex flex-row  ">
-            {% if  session['admin_logged_in'] == True and request.path.startswith('/admin') and not request.path == "/admin/login"  %}
+            {% if  session['admin_logged_in'] == True and request.path.startswith('/admin')%}
+             {%if not request.path == "/admin/login" and not request.path == '/admin/register'%}
            
               <li class="nav-item p-1">
                 <a class=" nav-link border btn " href="{{ url_for('admin.add_book') }}"><span class="p-2 p text-muted">Add Book</span></a>
@@ -41,7 +42,7 @@
               <li class="nav-item p-1">
                 <a class=" nav-link border btn " href="{{ url_for('admin.logout') }}"><span class="p-2 p text-muted">Logout</span></a>
               </li>
-
+             {%endif%}
             {% else %}
               {% if current_user.is_authenticated  %}
                 <li class="nav-item p-1">

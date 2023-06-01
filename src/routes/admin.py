@@ -6,9 +6,10 @@ from flask_login import login_required
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures.file_storage import FileStorage
 from src.extensions.admin_login_required import admin_login_required
-from src.models.user import Role, Admin
+from src.models.user import Role, Admin, AccessKey
 from src.models.books import Book, Genre
 from src.forms.book import BookForm, BookUpdateForm
+from src.forms.login import AdminRegisterForm, AdminLoginForm
 from src.main import db
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
@@ -16,23 +17,53 @@ admin = Blueprint('admin', __name__, url_prefix='/admin')
 
 @admin.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        admin_key = request.form.get('admin_key')
-        if admin_key:
-            key = Admin.query.filter_by(key=admin_key, active=True).first()
-            if key:
-                # Admin key is valid, perform the login operation
-                # For example, set a session variable to indicate the admin is logged in
-                # and redirect to the admin dashboard
+    if session['admin_logged_in'] == True:
+        return redirect(url_for('admin.dashboard'))
+    form = AdminLoginForm()
+
+    if form.validate_on_submit():
+
+        user = Admin.query.filter_by(email=form.email.data).first()
+
+        if user and user.password == form.password.data:
+            session['admin_logged_in'] = True
+
+            return redirect(url_for('admin.dashboard'))
+
+        else:
+            flash('Login Unsuccessful. Please check email and password', 'danger')
+            # return redirect(url_for('admin.register'))
+    return render_template('admin/login.html', title='Login', form=form)
+
+
+@admin.route("/register", methods=['GET', 'POST'])
+def register():
+    form = AdminRegisterForm()
+    if form.validate_on_submit():
+        access_key = AccessKey.query.filter_by(
+            key=form.access_key.data, active=True).first()
+
+        if access_key:
+            user = Admin.query.filter_by(email=form.email.data).first()
+            if not user:
+                db.session.add(Admin(
+                    email=form.email.data,
+                    password=form.password.data,
+
+                )
+                )
+                db.session.commit()
                 session['admin_logged_in'] = True
+                flash('Successfully Registered', 'success')
                 return redirect(url_for('admin.dashboard'))
+            else:
+                flash('Admin Already Registered. Please Login', 'warning')
+                return redirect(url_for('admin.login'))
+        else:
+            flash('Incorrect Access Key', 'error')
 
-        # Admin key is invalid or not provided, display an error message
-        error_message = 'Invalid admin key'
-        return render_template('admin/login.html', error_message=error_message)
+    return render_template('admin/register.html', title='Register', form=form)
 
-    # Render the admin login form
-    return render_template('admin/login.html')
 
 @admin.route("/logout")
 def logout():
@@ -40,35 +71,38 @@ def logout():
 
     return redirect(url_for('admin.login'))
 
-@admin.route('/access-key',methods=['GET', 'POST'])
+
+@admin.route('/access-key', methods=['GET', 'POST'])
 @admin_login_required
-def create_access_key(): 
+def create_access_key():
     if request.method == 'POST':
         # Generate a new admin key
-        key = str(uuid.uuid4())  # Replace this with your own key generation logic
-        
+        # Replace this with your own key generation logic
+        key = str(uuid.uuid4())
+
         # Create a new AdminKey instance
         admin_key = Admin(key=key, active=True)
-        
+
         # Add the key to the database
         db.session.add(admin_key)
         db.session.commit()
-        flash("New Access Token Create : " + key,"success")
+        flash("New Access Token Create : " + key, "success")
         # Redirect back to the same route to refresh the page
         return redirect(url_for('admin.create_access_key'))
 
-    
     admins = Admin.query.all()
-    return render_template('admin/all_admin.html', admins=admins) 
+    return render_template('admin/all_admin.html', admins=admins)
+
 
 @admin.route('/access-key/delete/<int:id>')
 @admin_login_required
-def delete_access_key(id): 
+def delete_access_key(id):
     admin = Admin.query.get_or_404(id)
     db.session.delete(admin)
     db.session.commit()
     flash('Admin deleted.', "warning")
     return redirect(url_for('admin.create_access_key'))
+
 
 @admin.route('/')
 @admin_login_required
@@ -151,7 +185,7 @@ def edit_book(book_id):
             has_changes = True
 
         if form.show.data != str(book.show):
-            if form.show.data == str(True) :
+            if form.show.data == str(True):
                 print(form.show.data)
                 book.show = True
                 has_changes = True
@@ -171,14 +205,13 @@ def edit_book(book_id):
                 has_changes = True
 
         if has_changes:
-        
+
             db.session.commit()
             flash('Book Updated Successfully', 'success')
         else:
             flash('No changes made to the book', 'info')
 
     return render_template('admin/book.html', title='Edit Book', form=form)
-
 
 
 @admin.route('/book/delete/<int:id>', methods=['POST'])

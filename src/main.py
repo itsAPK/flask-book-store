@@ -34,16 +34,18 @@ def create_app(config_class=Config):
     
 
     with app.app_context():
-        from .models.user import User,Admin
+        from .models.user import User,Admin,AccessKey
         from .models.books import Book,Rental
         
-       
+        
         db.create_all()
-        admin_key = Admin.query.first()  # Check if an admin key already exists
+        #Admin.__table__.drop(db.engine)
+        #AccessKey.query.delete()
+        admin_key = AccessKey.query.first()  # Check if an admin key already exists
         if not admin_key:
             # Create a default admin key if none exists
             key = str(uuid.uuid4())
-            default_key = Admin(key=key, active=True)
+            default_key = AccessKey(key=key, active=True)
             db.session.add(default_key)
             db.session.commit()
             
