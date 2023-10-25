@@ -22,5 +22,5 @@ PyMySQL==1.0.3
 python-dotenv==1.0.0
 SQLAlchemy==2.0.13
 typing_extensions==4.5.0
-Werkzeug==2.3.4
+Werkzeug==3.0.1
 WTForms==3.0.1
